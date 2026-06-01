@@ -13,7 +13,9 @@ import argparse, os
 import pandas as pd
 
 
-def main():
+def main(argv=None):
+    """argv=None  → lê sys.argv[1:] (chamada via CLI / !python no Colab).
+    argv=[...]  → usa lista explícita (chamada direta de célula de notebook)."""
     ap = argparse.ArgumentParser()
     ap.add_argument("corpus")
     ap.add_argument("--strata", nargs="+", default=["cluster"])
@@ -22,7 +24,7 @@ def main():
     ap.add_argument("--dn_filter", default=None,
         help="filtro col==valor para o estrato de sobreamostragem (ex.: cluster_origem==Law)")
     ap.add_argument("--seed", type=int, default=42)
-    a = ap.parse_args()
+    a = ap.parse_args(argv)
 
     df = pd.read_csv(a.corpus)
     assert "doc_id" in df.columns, "corpus.csv precisa de coluna doc_id"
