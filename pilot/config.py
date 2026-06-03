@@ -1,21 +1,29 @@
-"""Pré-registro do piloto de tipologia epistemológica — parâmetros e limiares.
-Fixados ANTES de observar resultados (integridade). Calibráveis com a supervisora,
-mas registrados a priori (ver protocolo_piloto_tipologia.docx, §5)."""
+"""Parâmetros e limiares pré-registrados para a fase de calibração.
+Fixados ANTES de observar resultados (integridade científica).
+Referência: Codebook v2.2 §DA-06; OSF pre-registration v2 §6.
+"""
 
-# Limiares de decisão pré-registrados
-MISTO_THRESHOLD = 0.10      # misto < 10% => "raro"
-ALPHA_DN_MIN    = 0.50      # concordância humana mínima para DN ser "coeso"
-PROBE_MARGIN    = 0.02      # margem de F1 considerada relevante (senão, empate)
+# --- Limiares de calibração (fase pré-Gold Standard) ---
+CALIB_ALPHA_DN_FLOOR     = 0.40   # Krippendorff α mínimo para epi_doutrinario_normativa
+                                   # nas 25 anotações de calibração. Abaixo → revisar guia.
+ALL_ZERO_RECONSIDER_RATE = 0.15   # > 15 % de artigos com (0,0,0) → reconsiderar esquema.
 
-# Modelo de embeddings (BERTimbau). Requer rede até huggingface.co (Claude Code/Colab).
+# --- Limiares do Gold Standard (entrada na fase de anotação completa) ---
+GS_ALPHA_GATE_EPI     = 0.55   # Krippendorff α global — postura epistemológica
+GS_ALPHA_GATE_CLUSTER = 0.67   # Krippendorff α global — cluster disciplinar
+
+# --- Modelo de embeddings (BERTimbau) ---
 MODEL_NAME = "neuralmind/bert-base-portuguese-cased"
 
-# Esquema esperado do CSV de anotações (uma linha por (doc_id, annotator)):
-#   doc_id      : id do artigo
-#   subsample   : 'prevalence' (amostra representativa) | 'dn_boost' (reforço de DN)
-#   annotator   : 'ann1','ann2',... ou 'gold' (rótulo adjudicado)
-#   A_pos,A_int : Chave A — binários independentes (0/1); misto = ambos 1
-#   B_label     : Chave B — 'EE'|'IC'|'DN' (rótulo único mutuamente exclusivo)
-#   B_forcing   : 1..3 — custo de supressão (3 = forçamento forte)
-# Abstracts (para embeddings) em CSV separado: doc_id, abstract.
-ANN_COLS = ["doc_id", "subsample", "annotator", "A_pos", "A_int", "B_label", "B_forcing"]
+# --- Esquema de anotação (uma linha por (doc_id, annotator)) ---
+#   doc_id                    : identificador do artigo
+#   subsample                 : 'calibracao' | 'calibracao_juridica'
+#   annotator                 : 'ann1', 'ann2', ... ou 'gold' (rótulo adjudicado)
+#   epi_positivista           : 0/1 — postura empírico-explicativa presente
+#   epi_interpretativa        : 0/1 — postura interpretativo-compreensiva presente
+#   epi_doutrinario_normativa : 0/1 — postura doutrinário-normativa presente
+#   Três flags independentes; qualquer combinação é válida; (0,0,0) = inconclusivo.
+ANN_COLS = [
+    "doc_id", "subsample", "annotator",
+    "epi_positivista", "epi_interpretativa", "epi_doutrinario_normativa",
+]

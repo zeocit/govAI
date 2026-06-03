@@ -1,0 +1,95 @@
+**Tipologia Epistemológica — Protocolo do Piloto de Decisão**
+
+**Binária multi-rótulo (EE/IC + DN derivado) vs. ternária mutuamente exclusiva (EE/IC/DN)**
+
+*Fernando Leite · Pós-doutorado FAPESP — FGV EAESP · Supervisão: Profa. Maria Alexandra Viegas Cortez da Cunha*
+
+Versão 1.0 · 29 de maio de 2026
+
+**§1  ****Objetivo e pergunta de decisão**
+
+| **OBJETIVO** Decidir empiricamente, antes de qualquer alteração estrutural, entre manter o esquema multi-rótulo (EE/IC binários independentes + DN derivado por exclusão) e adotar a ternária mutuamente exclusiva EE/IC/DN — medindo as duas grandezas que governam a decisão: (a) a prevalência real de casos mistos e (c) a separabilidade textual da categoria DN. |
+| --- |
+
+Duas perguntas operacionais:
+
+- **Q-a (prevalência de misto): **qual a proporção de artigos que recebem genuinamente EE=1 ∧ IC=1 — e quanto dessa coativação sobrevive quando o critério de codificação é o paradigma epistemológico dominante, e não o método?
+
+- **Q-c (separabilidade de DN): **a categoria DN possui assinatura textual coesa e aprendível, ou é internamente heterogênea a ponto de só funcionar como resíduo derivado?
+
+| **NOTA** O piloto é descritivo e orientado a limiares de decisão pré-registrados, não a testes de hipótese formais — o n é pequeno por desenho. As estimativas vêm com intervalo de confiança; as sondas supervisionadas são exploratórias. |
+| --- |
+
+**§2  ****Desenho geral**
+
+Cada artigo da amostra recebe anotação dupla (dois anotadores independentes + adjudicação) em duas chaves paralelas, na mesma sessão epistemológica, mas em sessão separada da anotação de cluster (regra de independência R-IND; intervalo ≥ 24h).
+
+- **Chave A (esquema vigente): **epi_positivista ∈ {0,1} e epi_interpretativa ∈ {0,1}, independentes; misto = ambos 1; DN derivado por exclusão (pos=0 ∧ interp=0).
+
+- **Chave B (esquema proposto): **epi_unico ∈ {EE, IC, DN}, rótulo único mutuamente exclusivo; mais um campo forcamento ∈ {1,2,3} que registra se a escolha única exigiu descartar uma postura co-presente (1 = escolha natural; 3 = forçamento forte).
+
+A dupla codificação permite medir o misto diretamente (Chave A) e o seu custo de supressão (forçamento alto na Chave B), além de comparar a confiabilidade de DN como classe positiva (Chave B) versus como resíduo derivado (Chave A).
+
+**§3  ****Amostra**
+
+- **Subamostra de prevalência (representativa): **≈ 150 artigos por amostragem aleatória estratificada proporcional ao corpus piloto (estratos: cluster disciplinar, área PA vs. SI, origem BR vs. internacional). Serve para estimar Q-a sem viés.
+
+- **Subamostra de reforço de DN (enriquecida): **≈ 50 artigos adicionais sobreamostrados de estratos onde DN se concentra (periódicos jurídicos, teoria normativa), apenas para a sonda de separabilidade (Q-c). Analisada à parte — não entra na estimativa de prevalência.
+
+| **ALERTA** Não misturar as duas subamostras na estimativa de prevalência: a subamostra enriquecida superestimaria DN e subestimaria o misto. A prevalência (Q-a) reporta-se apenas sobre a subamostra representativa; a separabilidade (Q-c) usa as duas, com a enriquecida garantindo casos positivos de DN suficientes. |
+| --- |
+
+**Anotadores. **Dois independentes + adjudicador (a supervisora ou terceiro). Limiares de divergência discutidos só após o fechamento da anotação, para não contaminar a codificação.
+
+**§4  ****Medidas**
+
+**4.1 Prevalência de misto (Q-a)**
+
+- **Taxa de misto direta: **% de artigos com EE=1 ∧ IC=1 na Chave A, sobre a subamostra representativa, com intervalo de confiança de Wilson (95%).
+
+- **Custo de supressão: **% de artigos com forcamento ≥ 2 na Chave B — proxy do misto latente que a ternária descartaria.
+
+- **Sensibilidade ao critério: **recalcular a taxa de misto sob instrução de codificar pela epistemologia dominante (não pelo método). A diferença entre as duas taxas isola quanto do misto é artefato de operacionalização por método.
+
+**4.2 Separabilidade textual de DN (Q-c) — três sondas em ordem de custo**
+
+- **Sonda 1 — Concordância humana para DN. **α de Krippendorff restrito a DN, comparando a confiabilidade de DN como classe positiva (Chave B) com a da derivação (Chave A). Se anotadores não convergem sobre o que é DN, a classe é mal-definida textualmente.
+
+- **Sonda 2 — Separabilidade não-supervisionada nos embeddings. **extrair embeddings dos abstracts com BERTimbau (mean-pooling), reduzir dimensionalidade (UMAP) e medir coesão/separação por silhouette score dos grupos EE/IC/DN. DN disperso ou sobreposto a EE/IC sinaliza a heterogeneidade temida.
+
+- **Sonda 3 — Classificador-sonda (exploratório). **regressão logística sobre embeddings congelados (e, se viável, fine-tuning leve do BERTimbau), em validação cruzada estratificada k=5, reportando F1 por classe — em especial F1 de DN — sob duas arquiteturas: B1 (softmax de 3 vias EE/IC/DN) e B2 (duas cabeças sigmoides + derivação de DN, réplica do desenho atual). Comparar F1_DN entre B1 e B2.
+
+| **NOTA** Com n pequeno, a Sonda 3 é indicativa, não conclusiva: reportar variância entre folds e tratar diferenças dentro da margem de erro como empate. As Sondas 1 e 2 são mais robustas ao tamanho da amostra e têm precedência interpretativa. |
+| --- |
+
+**§5  ****Critérios de decisão (pré-registrados)**
+
+Fixados antes de observar resultados, por integridade. Limiares calibráveis com a supervisora, mas registrados a priori.
+
+| **Resultado observado** | **Leitura** | **Decisão** |
+| --- | --- | --- |
+| misto < ~10% α_DN ≥ 0,50 F1_DN(B1) ≥ F1_DN(B2) | DN coeso e misto raro. | Adotar a ternária pura EE/IC/DN (com renome e elevação plena). |
+| misto ≥ ~10% α_DN ≥ 0,50 | DN coeso, mas o misto carrega informação real. | Adotar primário + secundário (3-B): epi_primario ∈ {EE,IC,DN} + flags binários secundários. |
+| α_DN < 0,50 OU F1_DN(B1) < F1_DN(B2) por margem relevante | DN textualmente difuso; melhor como resíduo. | Manter multi-rótulo + derivação; elevar DN apenas conceitualmente (3-A). |
+
+**Renome e elevação conceitual (EE/IC/DN) **são adotados em qualquer cenário — são baratos e independem do resultado do piloto; só a exclusividade mútua fica condicionada às métricas acima.
+
+**§6  ****Cronograma e produtos**
+
+- **Anotação dupla + adjudicação: **≈ 1 a 1,5 semana (200 artigos, duas chaves).
+
+- **Sondas de embeddings e classificador: **≈ 3 a 5 dias.
+
+- **Relatório de decisão: **≈ 2 dias. Janela total ≈ 2 a 3 semanas, absorvível antes de comprometer o esquema.
+
+- **Produtos: **relatório com as três métricas (prevalência, concordância de DN, separabilidade), recomendação acionável segundo §5 e entrada de Lab Notebook.
+
+**§7  ****Premissas e limitações**
+
+- **Premissa testada, não assumida: **a coesão textual de DN é a hipótese em julgamento — o piloto existe justamente para não a pressupor.
+
+- **n pequeno: **limita a sonda supervisionada; por isso a decisão pondera as três sondas, com peso maior nas duas robustas ao tamanho.
+
+- **Estratificação: **a subamostra enriquecida de DN não pode contaminar a estimativa de prevalência (§3).
+
+- **Dependência do critério de codificação: **a taxa de misto é sensível a codificar por método vs. por epistemologia (§4.1); ambas são medidas, e a escolha do critério é, ela própria, decisão a explicitar no protocolo de anotação.

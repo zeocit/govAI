@@ -1,30 +1,53 @@
-# Piloto de decisão — tipologia epistemológica (EE / IC / DN)
+# Calibração — tipologia epistemológica ternária
 
-Mede as duas grandezas que decidem entre **manter o multi-rótulo (EE/IC + DN derivado)**,
-adotar **primário+secundário (3-B)** ou a **ternária pura**. Critérios pré-registrados em `config.py`
-(e em `protocolo_piloto_tipologia.docx`, §5).
+Fase de calibração inter-anotador que antecede a construção do Gold Standard.
+Critério de entrada na anotação completa: **α_doutrinario_normativa ≥ 0,40** (Krippendorff,
+irrCAC/R). Limiares pré-registrados em `config.py` e OSF pre-registration v2 §6.
 
-## O que precisa de humano (irredutível)
-- **Prevalência de misto** e **α_DN** (concordância humana sobre DN) exigem anotação humana.
-- α exige **≥ 2 anotadores**. Nenhum script substitui isso; rótulos não devem ser fabricados.
+## Critério de entrada
 
-## Restrição de rede
-- `embeddings.py` (BERTimbau) precisa de **huggingface.co** → rodar no **Claude Code / Colab / máquina local**,
-  não na sandbox do chat.
-- `run_labels.py` e `run_analysis.py --tfidf` rodam **em qualquer lugar** (só pandas/sklearn).
-- `llm_prepass.py` usa a **API da Anthropic** (precisa de `ANTHROPIC_API_KEY`).
+| Gate | Limiar | Consequência se abaixo |
+|------|--------|------------------------|
+| `CALIB_ALPHA_DN_FLOOR` | 0,40 | Revisar Guia de Anotação v3 §3.3 e repetir |
+| `ALL_ZERO_RECONSIDER_RATE` | > 15 % | Reconsiderar esquema de categorias |
+
+Os limiares do Gold Standard (`GS_ALPHA_GATE_EPI = 0,55`; `GS_ALPHA_GATE_CLUSTER = 0,67`)
+são aplicados na fase seguinte, após aprovação na calibração.
+
+## O que requer humano (irredutível)
+
+- α inter-anotador exige **≥ 2 anotadores independentes**.
+- Nenhum script substitui anotação humana; rótulos fabricados invalidam o gate e o pré-registro OSF.
+
+## Restrições de rede
+
+- `embeddings.py` (BERTimbau) requer **huggingface.co** — rodar no Colab ou máquina local.
+- `run_labels.py` e `sample_selection.py` rodam em qualquer ambiente (só pandas).
+- `llm_prepass.py` requer `ANTHROPIC_API_KEY` no ambiente.
 
 ## Esquema de dados
-- `annotations.csv`: uma linha por (doc_id, annotator). Colunas: doc_id, subsample
-  {prevalence|dn_boost}, annotator {ann1,ann2,...,gold}, A_pos, A_int, B_label {EE|IC|DN}, B_forcing {1..3}.
-- `abstracts.csv`: doc_id, abstract.
+
+`sample_calib.csv`: doc_id, subsample {calibracao|calibracao_juridica}, stratum.
+
+`annotations.csv`: uma linha por (doc_id, annotator):
+
+| Coluna | Tipo | Valores |
+|--------|------|---------|
+| doc_id | str | id do artigo |
+| subsample | str | calibracao \| calibracao_juridica |
+| annotator | str | ann1, ann2, … \| gold |
+| epi_positivista | 0/1 | postura empírico-explicativa presente |
+| epi_interpretativa | 0/1 | postura interpretativo-compreensiva presente |
+| epi_doutrinario_normativa | 0/1 | postura doutrinário-normativa presente |
+
+Três flags independentes; qualquer combinação é válida; (0,0,0) = inconclusivo (não deriva nenhuma postura).
 
 ## Ordem de execução
-1. `python llm_prepass.py abstracts.csv`  → triagem provisória (NÃO é padrão-ouro), escopo do piloto.
-2. Anotação humana dupla → `annotations.csv` (≥2 anotadores + adjudicação 'gold').
-3. `python run_labels.py annotations.csv`  → prevalência de misto + α_DN.
-4. `python embeddings.py abstracts.csv`  (Claude Code/Colab) → `embeddings.npy`.
-5. `python run_analysis.py annotations.csv`  → separabilidade + probe + regra de decisão.
-   (Sem BERTimbau: `python run_analysis.py annotations.csv --tfidf abstracts.csv`.)
 
-Dependências: `pip install pandas scikit-learn krippendorff` (+ `transformers torch` para o passo 4).
+1. `python sample_selection.py corpus.csv` → `sample_calib.csv` (25 artigos, seed 42)
+2. `python llm_prepass.py abstracts.csv` → triagem exploratória (NÃO é padrão-ouro)
+3. Anotação humana dupla → `annotations.csv` (≥ 2 anotadores + adjudicação 'gold')
+4. `python run_labels.py annotations.csv` → α por postura + veredicto do gate
+5. *(opcional)* `python embeddings.py abstracts.csv` (Colab/local) → `embeddings.npy`
+
+Dependências: `pip install pandas krippendorff` (+ `transformers torch` para o passo 5).
