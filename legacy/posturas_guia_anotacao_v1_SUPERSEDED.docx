@@ -1,0 +1,323 @@
+**Governo Digital — Posturas Epistemológicas**
+
+**Documento-Guia de Anotação para o Gold Standard**
+
+*Camada epistemológica do classificador SciBERT · padrão-ouro para treinamento de NLP*
+
+Fernando Leite
+
+*Pós-doutorado FAPESP — FGV EAESP · Supervisão: Profa. Maria Alexandra Viegas Cortez da Cunha*
+
+Versão 1.0 · 29 de maio de 2026
+
+**§0  ****Sobre este documento**
+
+Este guia instrui a anotação manual da postura epistemológica de artigos de Governo Digital, a partir do abstract e dos metadados. É o documento-irmão do Guia de Clusters Disciplinares: ambos alimentam o mesmo padrão-ouro, mas operam em eixos distintos e independentes. Onde o guia de clusters pergunta de que tradição disciplinar o artigo provém, este pergunta como o artigo investiga e que tipo de afirmação faz sobre o mundo.
+
+| **ALERTA** As duas camadas são anotadas em sessões separadas, em dias diferentes, sem consultar o rótulo de cluster já atribuído (regra R4, §7). A separação evita contaminação cognitiva e preserva a ortogonalidade que o projeto pretende testar empiricamente. |
+| --- |
+
+O Quadro Comparativo de Posturas Epistemológicas — referência de consulta rápida — está reproduzido integralmente no Anexo A, ao final.
+
+**§1  ****Introdução e objetivo**
+
+**1.1 O que estamos classificando**
+
+Cada artigo recebe, na camada epistemológica, dois rótulos binários independentes e uma categoria derivada:
+
+- **epi_positivista (0/1): **o artigo adota postura empírico-explicativa (busca padrões, efeitos e fatores).
+
+- **epi_interpretativa (0/1): **o artigo adota postura interpretativo-compreensiva (busca significados e processos situados).
+
+- **EPI_NA (derivada): **categoria residual, atribuída por exclusão lógica quando epi_positivista = 0 E epi_interpretativa = 0 (texto doutrinário, normativo ou filosófico, fora do eixo empírico).
+
+Os dois binários podem ser 1 ao mesmo tempo: esse é o caso **misto** (métodos mistos), legítimo e esperado.
+
+**1.2 Por que a qualidade da anotação importa para o modelo**
+
+O classificador SciBERT não aprende a epistemologia “correta”: ele aprende a reproduzir os rótulos que nós lhe fornecemos. O padrão-ouro é o teto de desempenho do modelo. Rótulos inconsistentes não apenas reduzem a acurácia — eles ensinam o modelo a errar de forma sistemática e tornam a métrica de avaliação não confiável.
+
+Três consequências práticas:
+
+- **Consistência ****>**** velocidade. **Duas decisões coerentes valem mais do que dez decisões rápidas e divergentes. A concordância entre anotadores (Krippendorff α) é a porta de qualidade da camada epi; a meta operacional é α ≥ 0,40, calibrada nas sessões conjuntas.
+
+- **Ambiguidade é informação, não falha. **Quando o sinal textual é genuinamente indeterminado, marcar 'incerto' é a decisão correta — não um erro do anotador. Forçar um rótulo falso polui o padrão-ouro.
+
+- **O critério é teórico, não estilístico. **Anotamos a postura efetivamente operada pelo artigo, não a qualidade da escrita nem a simpatia do anotador por uma escola.
+
+**§2  ****A Regra de Ouro da Epistemologia**
+
+| **REGRA DE OURO** **A disciplina se anuncia; a epistemologia se esconde. **Classifique pelo tipo de afirmação e pelo método — nunca pelo tópico. |
+| --- |
+
+Esta é a diferença central em relação ao guia de clusters. A tradição disciplinar costuma ser explícita: o vocabulário substantivo, os autores citados e o periódico denunciam o cluster. A postura epistemológica, ao contrário, é quase sempre implícita — ela transparece em como o estudo foi conduzido e no que ele se propõe a concluir, não no assunto de que trata.
+
+| **ALERTA** **O mesmo tópico admite as três posturas. **“Transparência” pode ser objeto de um survey causal (positivista), de uma etnografia sobre como servidores a vivenciam (interpretativa) ou de um ensaio que defende a transparência como dever jurídico (EPI_NA). O tópico não decide nada. |
+| --- |
+
+**2.2 Protocolo de leitura**
+
+Para cada artigo, leia o abstract uma vez por inteiro e, em seguida, releia mirando duas zonas:
+
+- **Zona do método. **Como os dados (se houver) foram produzidos e analisados? Procure por “we conducted a survey…”, “drawing on interviews…”, “using PLS-SEM…”, “ethnographic…”, “we argue that…”, “we propose…”.
+
+- **Zona da conclusão / contribuição. **Que tipo de resultado o artigo entrega? Achados e efeitos? Uma compreensão situada? Uma prescrição ou princípio?
+
+Então, faça a pergunta diagnóstica única:
+
+| **REGRA** **Que tipo de afirmação este artigo faz sobre o mundo — causal, compreensiva ou normativa?** |
+| --- |
+
+**Causal/explicativa** → trilha positivista. **Compreensiva/situada** → trilha interpretativa. **Normativa/prescritiva, sem dado** → trilha EPI_NA.
+
+**§3  ****Definição operacional das categorias**
+
+Definições diretas, para uso prático na rotulação. O Anexo A traz o detalhamento completo (doxa, léxico, fricções).
+
+**3.1 Positivista — Empírico-Explicativa (EE)**
+
+- **Em uma frase: **busca padrões, efeitos e fatores. Pergunta “qual o efeito de X sobre Y?”.
+
+- **Lógica: **nomotética — generaliza para além do caso; visa validade externa e replicabilidade.
+
+- **No abstract: **hipóteses, variáveis e construtos, amostra (N), estatística, afirmações sobre o que é e o que causa o quê.
+
+**3.2 Interpretativa — Interpretativo-Compreensiva (IC)**
+
+- **Em uma frase: **busca significados e processos situados. Pergunta “como X faz sentido / é apropriado em Y?”.
+
+- **Lógica: **idiográfica — foca o particular e o contextual; generalização analítica (para a teoria), não estatística.
+
+- **No abstract: **caso profundo, etnografia, entrevistas, significado, sensemaking, construção social, descrição densa, reflexividade.
+
+**3.3 EPI_NA — Doutrinária / Normativa / Filosófica**
+
+- **Em uma frase: **nem explica nem compreende — prescreve. Argumenta por princípio, dever ou norma, sem evidência empírica.
+
+- **Lógica: **nem nomotética nem idiográfica no sentido empírico; pretensão universalista-principiológica ou conceitual.
+
+- **No abstract: **ausência de dado; tom prescritivo (“deve-se”, “ought to / should”); proposição de princípios; aparato jurídico ou filosófico.
+
+| **NOTA** **EPI_NA nunca é anotada diretamente. **Você marca apenas os dois binários (positivista e interpretativa). Quando ambos ficam em 0, o sistema deriva EPI_NA. Veja a árvore de decisão (§5). |
+| --- |
+
+**3.4 Misto (positivista = 1 E interpretativa = 1)**
+
+Atribuição válida e esperada para pesquisa de métodos mistos: uma fase quantitativa explanatória somada a uma fase qualitativa com pretensão compreensiva genuína (por exemplo, survey seguido de entrevistas interpretadas hermeneuticamente).
+
+| **ALERTA** **Não confunda método qualitativo com postura interpretativa. **“Análise qualitativa de conteúdo” aplicada a uma amostra grande, reduzida a contagem de códigos, é positivista com método qualitativo periférico — NÃO é misto. Para ser misto, a fase interpretativa precisa ter pretensão hermenêutica clara. |
+| --- |
+
+**§4  ****Heurísticas: as pistas metodológicas no abstract**
+
+Como a postura é implícita, o anotador trabalha com pistas. As tabelas abaixo reúnem os sinais mais frequentes e extraíveis. Nenhuma pista isolada decide o caso — pondere o conjunto e, sobretudo, o tipo de afirmação.
+
+**4.1 Tabela de pistas por postura**
+
+| **Postura** | **Pistas lexicais (vocabulário)** | **Pistas estruturais e de método** |
+| --- | --- | --- |
+| **Positivista** *(EE)* | hipótese, variável, construto, determinants, factors affecting, effect of, impact of, predictors, perceived usefulness, behavioral intention, e-service quality, satisfaction, significância, validade, confiabilidade | hipóteses numeradas (H1, H2…); N declarado; estatística (p < 0,05, β, R², χ²); survey, SEM/PLS-SEM, regressão, experimento; “results show that X significantly affects Y” |
+| **Interpretativa** *(IC)* | significado, sentido, interpretação, sensemaking, construção social, apropriação, experiência vivida, prática situada, reflexividade, hermenêutica, narrativa, enactment, thick description | ausência de hipóteses; pequeno-N intencional (“our case”, “27 interviews”); etnografia, estudo de caso em profundidade, observação participante, grounded theory; “we explore / seek to understand how…” |
+| **EPI_NA** *derivada* | doutrinário, normativo, princípio, dever, direito (subjetivo/fundamental), jurisprudencial, axiológico, dignidade, devido processo, ética, “ought to / should”, “we propose principles for”, “normative framework” | ausência total de dado primário ou sistematizado; conclusão como proposição normativa (“deve-se”, “recomenda-se”); argumentação por princípio/analogia; citação jurídica ou filosófica, não empírica |
+
+**4.2 Falsos amigos (sinalizadores negativos)**
+
+Padrões que parecem indicar uma postura, mas não indicam. São a causa mais comum de divergência entre anotadores.
+
+| **O que o abstract parece dizer** | **Classificação correta** |
+| --- | --- |
+| “Estudo de caso” usado para descrever uma implementação funcional, sem dimensão hermenêutica. | Positivista (método qualitativo descritivo), não interpretativa. |
+| “Interpretação” em sentido leigo (“nossa interpretação dos dados é…”), sem ancoragem hermenêutica. | Não qualifica como interpretativa. |
+| “Crítica” a um modelo ou política, isoladamente. | Não basta para EPI_NA. Verifique se há análise empírica (→ interpretativa) ou apenas argumento normativo (→ EPI_NA). |
+| “Análise qualitativa de conteúdo” sobre amostra grande, reduzida a contagem de códigos. | Positivista com método qualitativo periférico, não misto. |
+| Survey descritivo raso, sem teoria nem hipótese forte. | Positivista mesmo assim — tem dado e afirma o que é. Baixa qualidade não vira EPI_NA. |
+
+**§5  ****Árvore de decisão**
+
+Aplique os portões na ordem. A lógica de exclusão do EPI_NA é o coração do procedimento: ele só existe quando as duas trilhas empíricas falham.
+
+**Portão 1 — Há evidência empírica sistematizada?**
+
+Pergunte: o artigo produz ou analisa dados (primários ou secundários) — survey, entrevistas, caso, corpus, registros administrativos, jurisprudência sistematizada?
+
+- **NÃO → **trilha não-empírica. Vá ao Portão 4 (candidato a EPI_NA).
+
+- **SIM → **trilha empírica. Avalie os Portões 2 e 3 (positivista e interpretativa não são mutuamente exclusivos).
+
+**Portão 2 — É positivista?**
+
+Marque epi_positivista = 1 se há hipóteses OU N declarado OU estatística inferencial OU construtos operacionalizados em escala E o artigo afirma o que é / o que causa o quê (inclui surveys descritivos e bibliometria com contagem).
+
+**Portão 3 — É interpretativa?**
+
+Marque epi_interpretativa = 1 se há marcador interpretativo claro (caso profundo, etnografia, hermenêutica, sensemaking) E pretensão hermenêutica explícita E o método não se reduz a contagem de códigos. Se os Portões 2 e 3 forem ambos 1, o caso é misto — registre os dois.
+
+**Portão 4 — Derivação do EPI_NA**
+
+IF (epi_positivista = 0) AND (epi_interpretativa = 0)
+
+   AND (sem evidência empírica sistematizada)
+
+   AND (argumentação doutrinária / normativa / filosófica)
+
+   AND (pretensão prescritiva ou principiológica)
+
+THEN EPI_NA = 1
+
+Desvios obrigatórios a partir do Portão 4:
+
+- **Há dado sistematizado (ex.: análise sistemática de jurisprudência)? **Volte: é positivista, não EPI_NA.
+
+- **Há análise empírica com tese normativa (ex.: etnografia crítica)? **É interpretativa, não EPI_NA.
+
+- **É programático-instrumental sem teste (ex.: “proponho a arquitetura X”)? **Marque 'incerto' e escale — não é automaticamente EPI_NA.
+
+**Portão 5 — Contradições e ambiguidade**
+
+- **Contradição (R1): **as combinações positivista + EPI_NA e interpretativa + EPI_NA são logicamente impossíveis. Se você chegou a elas, há erro de leitura → marque 'incerto'.
+
+- **Ambiguidade genuína: **se, após os portões, o sinal permanecer indeterminado, marque 'incerto'. Não adivinhe.
+
+**§6  ****Casos limítrofes e regras de desempate**
+
+**6.1 Métodos mistos**
+
+pos = 1 E interp = 1 é a anotação correta quando há fase quantitativa explanatória somada a fase qualitativa genuinamente interpretativa. Desempate: a fase qualitativa tem pretensão hermenêutica (“how managers experience and give meaning…”) ou é só codificação de respostas abertas? Só a primeira torna o caso misto.
+
+**6.2 Resumos mal escritos ou muito curtos**
+
+Quando o abstract é insuficiente, siga esta ordem de desempate:
+
+- **1. Metadados. **Consulte palavras-chave, periódico e título completo — frequentemente revelam método (“survey”, “ethnography”, “a normative analysis”).
+
+- **2. Pergunta diagnóstica. **Mesmo sem detalhes de método, pergunte que tipo de afirmação o resumo sugere (causal, compreensiva, normativa).
+
+- **3. Marca empírica mínima. **Se houver qualquer indício de dado (números, amostra, “data”, “findings”), tenda à trilha empírica.
+
+- **4. ****'****Incerto****'****. **Se ainda assim o sinal não fechar, marque 'incerto' e sinalize como fronteira. Não preencha a lacuna com suposição.
+
+| **NOTA** **Não use a frequência de base como atalho. **Embora cerca de 80–90% da literatura do campo seja positivista, isso não autoriza rotular um caso indeterminado como positivista “por probabilidade”. O atalho contamina a métrica de concordância. |
+| --- |
+
+**6.3 Positivista de baixa qualidade vs. EPI_NA puro**
+
+Caso-limite clássico. O critério não é qualidade, é presença de evidência. Um survey descritivo raso, sem teoria, ainda tem dado e afirma o que é → positivista. Um ensaio doutrinário sem dado, que afirma o que deve ser → EPI_NA.
+
+**6.4 Artigo crítico com tese normativa**
+
+Se a crítica é sustentada por análise empírica (etnografia, caso, corpus) → interpretativa. Se é puramente doutrinária/principiológica, sem dado → EPI_NA. “Crítica” sozinha não decide.
+
+**6.5 Artigo programático / de proposta instrumental**
+
+“Proponho o modelo / arquitetura / framework X” sem teste empírico, mas com pretensão instrumental (não filosófica), vai para 'incerto' e escalonamento. Não é EPI_NA (que é normativo-doutrinário, não instrumental) nem positivista (não há dado).
+
+**6.6 Revisões e bibliometria**
+
+Revisão sistemática ou bibliometria com extração e contagem de dados (corpus, coocorrência, métricas) → positivista (descreve o que é). Ensaio de revisão conceitual ou agenda normativa, sem sistematização de dados → EPI_NA.
+
+**§7  ****Regras formais da camada epi (R1–R4)**
+
+| **Regra** | **Conteúdo** |
+| --- | --- |
+| R1 — Combinações | Misto (pos + interp) é frequente em estudos aplicados; pos-apenas domina; interp-apenas é comum em casos profundos; EPI_NA concentra-se em produção jurídico-filosófica. As combinações pos + EPI_NA e interp + EPI_NA são contraditórias → 'incerto'. |
+| R2 — Quando atribuir IC | (a) marcador interpretativo claro E (b) pretensão hermenêutica explícita E (c) método não reduzido a contagem de códigos. |
+| R3 — Quando atribuir EPI_NA | (a) sem evidência empírica E (b) argumentação doutrinária-normativa-filosófica E (c) pretensão prescritiva ou principiológica. “Crítica” isolada não basta. |
+| R4 — Independência das camadas | O rótulo epi é independente do cluster. Não use o cluster como prior. Anote em sessão separada, em dia diferente, sem consultar o cluster já atribuído. |
+
+**§8  ****Procedimento prático de anotação**
+
+- **Ambiente. **Use o projeto project_epi no Label Studio, distinto do project_cluster.
+
+- **Por artigo. **Leia o abstract → aplique a Regra de Ouro (§2) → percorra a árvore (§5) → marque epi_positivista (0/1) e epi_interpretativa (0/1). O EPI_NA é derivado pelo sistema.
+
+- **Marcação de incerteza. **Use 'incerto' para ambiguidade genuína e sinalize casos de fronteira — eles são insumo metodológico, não defeito.
+
+- **Calibração. **Sessões conjuntas periódicas com a supervisora; acompanhe o α de Krippendorff; discuta cada divergência até convergência de critério.
+
+- **Higiene cognitiva. **Respeite o intervalo de ≥ 24h entre as sessões de cluster e de epi (R4).
+
+**§9  ****Exemplos trabalhados**
+
+| **NOTA** *Os abstracts abaixo são composites ilustrativos, construídos para ensinar padrões — não são citações reais.* |
+| --- |
+
+**Exemplo 1 — Positivista claro**
+
+| **ABSTRACT (composite)** *This study examines the determinants of e-government service adoption among 612 citizens in three municipalities. Drawing on UTAUT, we test six hypotheses using PLS-SEM. Performance expectancy (β = 0.41, p **<** 0.001) and facilitating conditions significantly predicted behavioral intention, explaining 58% of the variance.* |
+| --- |
+
+**Raciocínio. **Hipóteses numeradas, N declarado, SEM, coeficientes e p-value, afirmação causal sobre o que prediz a intenção de uso. Trilha empírica; Portão 2 satisfeito; nenhum marcador hermenêutico.
+
+epi_positivista = 1 · epi_interpretativa = 0 · (EPI_NA = 0)
+
+**Exemplo 2 — Interpretativa clara**
+
+| **ABSTRACT (composite)** *Drawing on a nine-month ethnographic study and 27 in-depth interviews, this paper explores how front-line civil servants make sense of and appropriate a new citizen-request platform in their daily practice, showing how the technology is enacted and reinterpreted against entrenched bureaucratic routines.* |
+| --- |
+
+**Raciocínio. **Etnografia, pequeno-N intencional, “make sense of and appropriate”, enactment — pretensão hermenêutica explícita. Trilha empírica; Portão 3 satisfeito; sem hipóteses nem estatística.
+
+epi_positivista = 0 · epi_interpretativa = 1 · (EPI_NA = 0)
+
+**Exemplo 3 — EPI_NA (doutrinário-normativo)**
+
+| **ABSTRACT (composite)** *This article argues that automated decision-making in public administration raises fundamental questions of due process. Building on constitutional principles and the philosophy of information, we propose a normative framework of five principles that algorithmic systems ought to satisfy to respect citizens**'** rights.* |
+| --- |
+
+**Raciocínio. **Sem dado empírico; argumentação por princípio constitucional e filosófico; proposição prescritiva (“ought to”, “we propose a normative framework”). Portão 1 = NÃO; Portão 4 satisfeito.
+
+epi_positivista = 0 · epi_interpretativa = 0 → EPI_NA = 1
+
+**Exemplo 4 — Misto**
+
+| **ABSTRACT (composite)** *This study combines a survey of 380 public managers with in-depth interviews in two agencies. The quantitative phase identifies factors associated with implementation success; the qualitative phase interprets how managers experience and give meaning to the change process.* |
+| --- |
+
+**Raciocínio. **Fase quantitativa explanatória (“factors associated with success”) somada a fase qualitativa com pretensão hermenêutica genuína (“interprets how managers experience and give meaning”). Portões 2 e 3 ambos satisfeitos.
+
+epi_positivista = 1 · epi_interpretativa = 1  (misto)
+
+**Exemplo 5 — Programático → ****'****incerto****'**** (não EPI_NA)**
+
+| **ABSTRACT (composite)** *This paper proposes GovStack-BR, a reference architecture for interoperable digital public services. We describe its layered design and components and discuss how it could improve service integration across agencies.* |
+| --- |
+
+**Raciocínio. **Proposta instrumental (arquitetura), sem teste empírico e sem registro normativo-doutrinário. Não é positivista (sem dado), não é EPI_NA (instrumental, não principiológico). Caso de escalonamento (§6.5).
+
+marcar 'incerto' · escalar para calibração
+
+**§10  ****Autoavaliação rápida**
+
+Classifique cada item antes de conferir o gabarito. Acerto ≥ 4/5 indica que você pode iniciar a anotação supervisionada.
+
+- **Q1. **Survey de 500 cidadãos testando, via SEM, se a confiança prediz o uso de e-serviços.
+
+- **Q2. **Ensaio doutrinário que defende a proteção de dados como direito constitucional, sem dados.
+
+- **Q3. **Relato etnográfico de como um painel de smart city ressignifica a gestão urbana para os gestores.
+
+- **Q4. **Bibliometria de 3.000 artigos de e-gov mapeando coocorrência de palavras-chave.
+
+- **Q5. **Abstract de duas frases: “Discutimos desafios da IA no governo e sugerimos caminhos.”
+
+**Gabarito**
+
+- **Q1 → Positivista. **Hipótese, N, SEM, afirmação causal.
+
+- **Q2 → EPI_NA. **Sem dado; normativo; prescritivo.
+
+- **Q3 → Interpretativa. **Etnografia, ressignificação, sentido situado.
+
+- **Q4 → Positivista. **Bibliometria com dados e contagem descreve o que é (caso comum de confusão com EPI_NA).
+
+- **Q5 → ****'****Incerto****'****. **Resumo insuficiente; cheque metadados; se não fechar, 'incerto' (§6.2).
+
+**Anexo A  ****Quadro Comparativo de Posturas Epistemológicas**
+
+*Consulta rápida. A camada epistemológica é anotada de forma independente da camada de clusters: positivista e interpretativa são flags binários independentes (misto = ambos = 1) e EPI_NA é derivada por exclusão lógica (positivista = 0 ∧ interpretativa = 0).*
+
+| **Postura Epistemológica** | **Tipo de afirmação e lógica inferencial** | **Construção do objeto** | **Tensões e Disputas Internas** | **Léxico Típico** | **Doxa Fundamental** | **Sobreposições e Pontos de Fricção** | **Regras de Derivação (IA / codificadores)** |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **Positivista** *Empírico-Explicativa (EE)* epi_positivista = 1 | **Afirmação: **causal-explicativa / correlacional. Diz o que é e o que causa o quê — “X afeta Y”, “fatores determinantes de Z”. **Lógica: **nomotética. Busca regularidades e generalizações para além do caso; visa validade externa e replicabilidade. Inferência dedutiva (teste de hipótese) ou indutivo-estatística. | O objeto é decomposto em variáveis e construtos mensuráveis com relações estimáveis. Adoção, sucesso de e-serviço e transparência tornam-se constructos operacionalizados em escalas e indicadores. O contexto entra como variável de controle, não como tecido constitutivo. A realidade é tratada como dada e externa ao observador. | Teoria de variância vs. teoria de processo (efeitos estimados vs. sequências causais). Positivismo “fino” (mensuração ateórica, factors affecting…) vs. positivismo teórico-confirmatório (teste de modelo nomológico). Crítica de Heeks & Bailur (2007): predomínio de surveys descritivos sem teoria — campo “intelectualmente frágil”; réplica de Bannister & Connolly (2015): a subteorização seria exagerada. Validade externa vs. especificidade contextual (generalizar entre países e níveis de governo). | **Frameworks canônicos. **TAM (Davis, 1989), UTAUT (Venkatesh et al., 2003), modelo de sucesso de SI de DeLone & McLean, modelos de estágios/maturidade usados como escala (Layne & Lee, 2001). Sua presença sinaliza desenho de mensuração. **Vocabulário técnico. **hipótese, variável dependente/independente, construto, validade (de constructo, interna, externa, convergente, discriminante), confiabilidade, generalização, amostra, significância, efeito, moderação, mediação. **Métodos predilectos. **survey transversal e longitudinal, SEM (PLS-SEM, CB-SEM), regressão (logística, OLS, painel), experimentos e quase-experimentos, dados administrativos/secundários, econometria. **Termos empíricos. **adoption, perceived usefulness, behavioral intention, e-service quality, user satisfaction, determinants, factors affecting, impact of, effect of, predictors, drivers, antecedents. **Marcadores estruturais/retóricos. **hipóteses numeradas (H1, H2…); N declarado; estatística (p < 0,05, β, R², χ², t); “this study tests the effect of…”; “results show that X significantly affects Y”. | Ontologia realista: mundo objetivo, independente do observador, apreensível por mensuração. Epistemologia dualista-objetivista: o pesquisador é externo e neutro; conhecimento válido é o que se generaliza e replica. O social é governado por regularidades passíveis de explicação causal — o modelo das ciências naturais aplicado ao governo digital. Valor e significado emergem derivativamente de variáveis. | **vs. Interpretativa. **o caso difícil é o estudo de caso positivista — usa método qualitativo sem pretensão hermenêutica, só para descrever implementação ou ilustrar variáveis. Sinal EE: codificação, contagem, busca de padrão generalizável. **vs. EPI_NA. **um positivista de baixa qualidade (survey descritivo raso) ainda é positivista — tem dado e afirma o que é. O critério não é qualidade, é presença de evidência empírica sistematizada. **Misto. **pos = 1 ∧ interp = 1 quando há fase quantitativa explanatória somada a fase qualitativa com pretensão compreensiva genuína. | IF (hipótese OR N declarado OR estatística inferencial OR construto em escala) AND (afirmação sobre o que É / o que causa o quê) THEN epi_positivista = 1 *Baixa qualidade teórica não rebaixa para EPI_NA — survey descritivo raso permanece positivista.* |
+| **Interpretativa** *Interpretativo-Compreensiva (IC)* epi_interpretativa = 1 | **Afirmação: **compreensiva-situada. Diz como algo faz sentido e como os atores constroem e vivenciam — “como X é interpretado / apropriado em Y”. **Lógica: **idiográfica. Busca o particular, o singular, o contextualmente único; generalização analítica (para a teoria), não estatística. Inferência abdutivo-hermenêutica. | O objeto é construído socialmente e indissociável do contexto. A tecnologia de governo não é artefato fixo: é apropriada, enacted e ressignificada na prática. O significado dos atores é o dado primário; o contexto é tecido constitutivo, não controle. O pesquisador participa da construção do conhecimento (reflexividade). | Interpretativismo “puro” (compreensão) vs. vertente crítico-emancipatória (compreensão somada à crítica de poder e ideologia). Fundamentos rivais: hermenêutica, construcionismo social, teoria da estruturação (Orlikowski) e sensemaking (Weick). Generalização: rejeição da generalização estatística vs. defesa da generalização analítica/teórica (Walsham). Posição minoritária no campo: Heeks & Bailur (2007) e Meijer & Bekkers (2015) registram 80–90% de produção positivista, apesar da herança interpretativa da AP. | **Frameworks canônicos. **princípios de Klein & Myers (1999) para estudos interpretativos; estudo de caso interpretativo de Walsham (1995, 2006); grounded theory (Glaser & Strauss; Charmaz); círculo hermenêutico; estruturação / technology-in-practice (Orlikowski); sensemaking (Weick); Abordagem das Capacidades (Sen) na inclusão digital. **Vocabulário técnico. **significado, sentido, interpretação, contexto, situado, sensemaking, construção social, prática, apropriação, experiência vivida, reflexividade, hermenêutica, narrativa, enactment. **Métodos predilectos. **estudo de caso único/comparado em profundidade, etnografia, entrevistas em profundidade, observação participante, análise narrativa e de discurso, grounded theory, action research, análise temática interpretativa. **Termos empíricos. **lived experience, social construction, sensemaking, appropriation, situated practice, meaning-making, in-depth case study, ethnographic, thick description, stakeholder perspectives, narratives. **Marcadores estruturais/retóricos. **ausência de hipóteses; pequeno-N intencional (“our case”, “X interviews”); “we explore / seek to understand how…”; descrição densa; voz e reflexividade do pesquisador; conclusão como compreensão situada, sem generalização estatística. | Ontologia construtivista/relativista: a realidade social é constituída por significados intersubjetivos. Epistemologia subjetivista-interpretativa: o conhecimento é co-produzido; não há ponto de vista neutro. A compreensão (verstehen) precede e supera a explicação causal. Valor público, confiança e participação são fenômenos de sentido, não variáveis — apreendidos do ponto de vista dos atores. | **vs. Positivista. **fronteira no uso do método qualitativo. Sinal IC: pretensão hermenêutica explícita e interpretação articulada do significado. Sinal EE disfarçado: “análise qualitativa de conteúdo” reduzida a contagem de códigos em amostra grande. **vs. EPI_NA. **artigo crítico-emancipatório com tese normativa, mas estruturado por análise empírica (etnografia, caso), é interpretativa, não EPI_NA. “Crítica” sozinha não basta para EPI_NA. **Sinal negativo. **“interpretação” em sentido leigo (“nossa interpretação dos dados…”), sem ancoragem hermenêutica, não qualifica. | IF (marcador interpretativo claro: caso profundo / etnografia / hermenêutica / sensemaking) AND (pretensão hermenêutica explícita) AND (método não se reduz a contagem de códigos) THEN epi_interpretativa = 1 *A presença dos três é necessária; o marcador textual isolado não basta.* |
+| **EPI_NA** *Doutrinária-Normativa-Filosófica* DERIVADA: pos = 0 ∧ interp = 0 | **Afirmação: **normativa-prescritiva / conceitual-filosófica. Diz o que deve ser, o que um princípio ou direito exige, ou elabora um conceito — “deve-se”, “recomenda-se”, “framework should”. **Lógica: **nem nomotética nem idiográfica no sentido empírico. Pretensão universalista-principiológica (o princípio vale em geral, sem ser lei empírica) ou conceitual. Inferência por princípio, dever, analogia ou coerência normativa — não por evidência. | O objeto não é fenômeno a observar, mas norma, princípio, direito ou conceito a elaborar e justificar. O governo digital aparece como locus de obrigações (proteção de dados, transparência como dever, dignidade, devido processo algorítmico) ou como objeto de teorização conceitual. Não há dado: há texto normativo, doutrina, princípio. | Doutrina jurídica (dogmática, baseada na norma posta) vs. ética principiológica (principlism) vs. filosofia da informação (Floridi) — registros distintos sob o mesmo guarda-chuva. Prescrição de lege ferenda (como o direito deveria ser) vs. interpretação dogmática do direito vigente. Legitimidade cientométrica: a produção normativa é frequentemente lida como “não-empírica” e marginalizada em revisões positivistas, embora seja central no eixo Direito. | **Frameworks canônicos. **método dogmático/doutrinário jurídico; principialismo ético; filosofia da informação (Floridi); value-sensitive design e ethics-by-design como quadros normativos; análise constitucional/regulatória; teoria normativa da democracia deliberativa (quando usada sem evidência). **Vocabulário técnico. **doutrinário, normativo, princípio (jurídico/ético), dever, direito (subjetivo/fundamental), jurisprudencial, axiológico, hermenêutica jurídica, dignidade, devido processo, accountability como princípio, ética. **Métodos predilectos. **análise doutrinária/dogmática, ensaio teórico-normativo, argumentação por princípio e analogia, revisão conceitual prescritiva, análise de norma sem dataset jurisprudencial sistemático. **Termos empíricos. **diagnóstico por ausência — não há termos empíricos. Em seu lugar: “we propose principles for”, “ethical guidelines”, “ought to / should”, “a normative framework for”, “rights-based approach”. **Marcadores estruturais/retóricos. **ausência total de dado primário ou sistematizado; conclusão como proposição normativa (“deve-se”, “recomenda-se”); argumentação principiológica; aparelho de citação jurídico/filosófico, não empírico. | Núcleo prescritivo/doutrinário: o conhecimento válido não descreve nem compreende o que existe — prescreve o que deve existir ou elabora o que um princípio significa. Premissa de que as questões de governo digital são, no fundo, questões de direito, valor e dever, resolvidas por argumentação normativa e não por evidência. A autoridade do argumento vem da norma, do princípio ou da coerência conceitual — não do dado. | **vs. Positivista. **caso-limite clássico. Artigo doutrinário com componente empírico substantivo (análise sistemática de jurisprudência, dataset de decisões) é positivista, não EPI_NA. Distinguir doutrina pura de análise empírica do direito. **vs. Interpretativa. **artigo crítico com tese normativa, mas ancorado em análise empírica, é interpretativa. EPI_NA exige ausência de evidência empírica. **Escalonamento. **artigo programático (“proponho a arquitetura X”) sem teste, mas com pretensão instrumental (não filosófica), vai para 'incerto', não para EPI_NA. **Contradições (R1). **EE+NA e IC+NA são logicamente contraditórias → 'incerto'. | # DERIVADA — nunca anotada diretamente IF (epi_positivista = 0) AND (epi_interpretativa = 0) AND (sem evidência empírica sistematizada) AND (argumentação doutrinária/normativa/filosófica) AND (pretensão prescritiva/principiológica) THEN EPI_NA = 1 *Dado sistematizado → positivista. Tese normativa com análise empírica → interpretativa. Programático-instrumental sem teste → **'**incerto**'**. “Crítica” isolada não basta.* |
