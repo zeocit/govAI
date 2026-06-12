@@ -36,7 +36,7 @@ CRITERIO = (
     "\"postura_proeminente_llm\":\"positivista|interpretativa|doutrinario_normativa|mixed\","
     "\"nota_epistemologica\":\"<1-2 frases>\"}\n\n"
     "score_x = confiança de que a postura x está presente. "
-    "postura_proeminente_llm = maior score; 'mixed' se duas ou mais >= 0.5; "
+    "postura_proeminente_llm = maior score; 'mixed' se positivista >= 0.5 E interpretativa >= 0.5; "
     "empate exato resolve a favor de positivista."
 )
 
@@ -55,7 +55,8 @@ def parse_response(raw):
     dom = obj.get("postura_proeminente_llm", "")
     if dom not in (*POSTURA_VALORES, "mixed"):
         pos = [k for k, v in scores.items() if v >= 0.5]
-        if len(pos) >= 2:
+        emp = [k for k in pos if k in ("score_positivista","score_interpretativa")]
+        if len(emp) >= 2:
             dom = "mixed"
         elif pos:
             dom = pos[0].replace("score_", "")
