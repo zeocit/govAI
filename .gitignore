@@ -1,0 +1,79 @@
+# ── Segredos ─────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials.json
+token.txt
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ── R ────────────────────────────────────────────────────────────────────────
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+renv/library/
+renv/local/
+renv/cellar/
+renv/staging/
+# manter renv.lock versionado (lockfile de reprodutibilidade)
+!renv.lock
+
+# ── Dados (não versionar; o disco de trabalho usa dados/ em PT) ──────────────
+dados/
+data/raw/
+data/external/
+data/interim/
+data/processed/
+data/annotations/
+# manter o esqueleto de diretórios
+!data/**/.gitkeep
+# amostras pequenas e curadas PODEM ser versionadas
+!data/samples/
+!data/samples/**
+
+# Formatos grandes (preferir Git LFS via .gitattributes quando versionados)
+*.parquet
+*.feather
+*.arrow
+
+# ── Modelos e checkpoints ────────────────────────────────────────────────────
+models/
+checkpoints/
+*.bin
+*.safetensors
+*.pt
+*.onnx
+wandb/
+
+# ── Logs e artefatos de execução ─────────────────────────────────────────────
+logs/
+*.log
+.checkpoint_*
+.ckpt_*
+
+# ── Outputs gerados (figuras/tabelas reproduzíveis a partir do pipeline) ─────
+outputs/figures/
+outputs/tables/
+outputs/reports/
+
+# ── Sistema operacional ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

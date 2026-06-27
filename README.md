@@ -1,56 +1,74 @@
 # govAI
 
-**AI for Scientometric Analysis in Digital Governance**  
-Post-doctoral research project · FGV EAESP · FAPESP
+Mapeamento cientométrico do campo de produção da Governança Digital, com teoria de campos de Bourdieu como moldura analítica. Pós-doutorado de Fernando Leite na FGV EAESP (CEAPG, Área de Tecnologia e Governos), financiado pela FAPESP (processo 2023/13163-7), supervisão da Profa. Maria Alexandra Viegas Cortez da Cunha. Estágio BEPE na Danube University Krems, anfitriã Profa. Gabriela Viale Pereira.
 
----
+Adapta a metodologia "Cientometria 2.0", desenvolvida para a Ciência Política brasileira, ao campo da Governança Digital.
 
-## Project
+## Pipeline
 
-This repository documents the research project *Inteligência Artificial para a análise cientométrica do campo de Governança Digital: tradições disciplinares, agendas temáticas e hierarquia da produção científica*.
-
-The project applies NLP/AI methods — supervised classification (BERTimbau), unsupervised topic modeling (BERTopic), and network analysis (SBM/ERGM) — to map disciplinary traditions and thematic hierarchies in the Digital Governance literature, framed within Bourdieusian field theory.
-
-**Supervisor:** Profa. Dra. Maria Alexandra Viegas Cortez da Cunha (CEAPG / FGV EAESP)  
-**International collaborator:** Profa. Gabriela Viale Pereira (Danube University Krems)  
-**Funding:** FAPESP Post-Doctoral Fellowship
-
----
-
-## Repository Structure
+A ordem de execução está codificada no nome dos scripts. Esta sequência é referenciada pelo Manual Operacional, pelo Protocolo de Anotação e pelo pré-registro OSF, e é o que permite reproduzir o depósito Zenodo.
 
 ```
-govAI/
-├── lab-notebook/       # Scientific lab notebook — decisions, progress, open questions
-├── pipeline/           # Data processing and classification pipeline (pipeline_v2)
-├── codebook/           # Annotation codebook and inter-rater reliability protocols
-├── corpus/             # Corpus construction scripts and metadata
-├── models/             # BERTimbau fine-tuning and BERTopic configurations
-├── analysis/           # Network analysis (SBM, ERGM), prestige index
-└── docs/               # Project documents, FAPESP proposal, roadmap
+01a  coleta OpenAlex (periódicos do universo de fontes, 2000-2024)
+02   limpeza estrutural
+02b  detecção de retrações
+02c  deduplicação fuzzy por título
+02d  extração da estrutura de autoria (rede de coautoria)
+02f  extração de referências citadas (rede de citações)
+04a  pré-classificação LLM: cluster disciplinar (mono-rótulo)
+04b  pré-classificação LLM: orientação epistemológica (três flags independentes)
+04c  amostragem estratificada para o Gold Standard (Label Studio)
+05   consolidação das anotações em Gold Standard (concordância entre anotadores)
+06a  treino do classificador de cluster (BERTimbau, mono-rótulo)
+06b  treino do classificador epistemológico (BERTimbau, multi-rótulo)
+07   aplicação dos modelos ao corpus completo
+09   exportação consolidada para Zenodo (.R)
 ```
 
----
+Etapas posteriores (modelagem de tópicos com BERTopic, redes SBM/ERGM, prestígio por PageRank/eigenvector) entram quando o código correspondente for escrito.
 
-## Lab Notebook
+## Camada epistemológica: dois eixos
 
-The lab notebook follows the protocol defined in the project's methodological manual (§10.1). Each entry covers a single decision, development, or open question.
+A classificação epistemológica usa dois eixos ortogonais.
 
-**Convention:** `lab-notebook/YYYY-MM-DD-slug.md`
+Eixo 1, orientação empírica: `epi_positivista` e `epi_interpretativa` (flags independentes), das quais se deriva `orientacao_proeminente` ∈ {positivista, interpretativa, mixed, nenhuma} por regra determinística (sem prioridade, sem DN-domina).
 
-### Recent Entries
+Eixo 2, registro doutrinário-normativo: `epi_doutrinario_normativa`, flag binária independente, com operacionalização disjuntiva (registro doutrinário OU normativo basta). Subtags diagnósticas `dn:modo`, `dn:norm`, `dn:ambos`.
 
-| Date | Entry | Status |
-|------|-------|--------|
-| 2026-05-28 | [Reading sessions reorganization](lab-notebook/2026-05-28-reading-sessions-reorganization.md) | ✅ Done |
-| 2026-05-28 | [Pipeline v2 — code review & patches](lab-notebook/2026-05-28-pipeline-v2-code-review.md) | ⚠️ Patch pending |
-| 2026-05-28 | [Institutional infrastructure of digital government](lab-notebook/2026-05-28-institutional-infrastructure-digital-gov.md) | ✅ Done |
-| 2026-05-28 | [Disciplinary clusters — integrated framework](lab-notebook/2026-05-28-disciplinary-clusters-integrated-framework.md) | ✅ Done |
-| 2026-05-28 | [Scientific prestige index — open question](lab-notebook/2026-05-28-scientific-prestige-index-open-question.md) | 🔍 Under analysis |
+A derivação determinística vive em `pipeline_v7/utils/derive_orientacao.py` (fonte única). Os limiares de concordância vivem em `pipeline_v7/utils/thresholds.py` (fonte única).
 
----
+## Estrutura do repositório
 
-## Status
+```
+pipeline_v7/      scripts numerados do pipeline + utils/ (módulos reutilizáveis)
+lab-notebook/     caderno de laboratório (Open Science): um .md por achado/decisão
+notebooks/        notebooks Colab (piloto, calibração)
+pilot/            material do pré-teste
+references/       snapshots PDF imutáveis por marco OSF (codebook, protocolos)
+data/             esqueleto; conteúdo não versionado (ver .gitignore)
+archive/legacy/   versões obsoletas preservadas
+```
 
-**Current phase:** T1 — Project setup, conceptual grounding, pipeline infrastructure  
-**Fellowship start:** September 2026 (pending FAPESP approval)
+## Reprodutibilidade e governança
+
+O Manual Operacional, o Codebook, os Guias de Anotação e o Protocolo são mantidos no Google Drive ("1 Metodologia") como superfície de edição. O repositório aponta para o canônico; `references/` guarda apenas snapshots PDF congelados por marco.
+
+O pré-registro OSF (v2.0) e seus adendos são documentos com timestamp e DOI. Documentos registrados não se editam: qualquer mudança de limiar ou de schema entra como adendo nomeado, com assinatura da supervisora.
+
+Cada script grava hash SHA-256 em `snapshot.json` para auditoria. As sementes são fixas (42, 123, 2026).
+
+## Ambiente
+
+Python via uv; R com renv. Pacotes-chave: pyalex, pandas, transformers (BERTimbau), BERTopic, irrCAC (R, IRR canônico), statnet (ergm, network, sna). LLM de pré-classificação via OpenRouter.
+
+Variáveis de ambiente em `.env` (ver `.env.example`). Nunca versionar `.env`.
+
+## Pré-registro, dados e citação
+
+Pré-registro OSF: ver `references/osf/`. DOI a inserir após depósito.
+Depósito de dados Zenodo: DOI a inserir após publicação.
+Para citar este trabalho, ver `CITATION.cff`.
+
+## Licença
+
+Ver `LICENSE`.

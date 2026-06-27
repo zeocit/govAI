@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "Se você usar este material, por favor cite-o conforme abaixo."
+title: "govAI: mapeamento cientométrico do campo de produção da Governança Digital"
+abstract: >-
+  Pipeline e materiais metodológicos para o mapeamento cientométrico do campo
+  da Governança Digital, com teoria de campos de Bourdieu como moldura analítica.
+  Adapta a metodologia Cientometria 2.0 ao campo da Governança Digital.
+type: software
+authors:
+  - given-names: Fernando
+    family-names: Leite
+    affiliation: "FGV EAESP (CEAPG, Área de Tecnologia e Governos)"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # CONFIRMAR e preencher
+repository-code: "https://github.com/zeocit/govAI"
+# url: "https://github.com/zeocit/govAI"
+keywords:
+  - cientometria
+  - governança digital
+  - teoria de campos
+  - Bourdieu
+  - NLP
+  - BERTimbau
+  - análise de redes
+# license: "CONFIRMAR (mesma do arquivo LICENSE)"
+version: "0.1.0"   # ATUALIZAR a cada marco
+date-released: "2026-06-26"   # ATUALIZAR no release
+# doi: "10.5281/zenodo.XXXXXXX"   # inserir após depósito Zenodo
+# A pesquisa é financiada pela FAPESP, processo 2023/13163-7.
