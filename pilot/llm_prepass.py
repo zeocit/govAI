@@ -1,14 +1,36 @@
 """PRÉ-CLASSIFICAÇÃO EXPLORATÓRIA por LLM (triagem provisória — NÃO é padrão-ouro).
 Tipologia ternária multi-rótulo: epi_positivista, epi_interpretativa,
 epi_doutrinario_normativa como flags positivos independentes.
-Qualquer combinação é válida; três zeros não derivam nenhuma postura.
+Qualquer combinação é válida; três zeros → inconclusiva.
 Saída: score_positivista, score_interpretativa, score_doutrinario_normativa,
-       postura_proeminente_llm, nota_epistemologica, entropia_llm_epi.
+       orientacao_proeminente_llm, inconclusiva, nota_epistemologica, entropia_llm_epi.
+Dois eixos ortogonais (DA-09):
+  Eixo 1 — orientacao_proeminente_llm: derivado de EE e IC apenas (DN nunca entra).
+  Eixo 2 — score_doutrinario_normativa: flag independente, lido diretamente.
 NÃO substitui anotação humana nem fornece alpha_DN (requer ≥2 humanos independentes).
 Requer ANTHROPIC_API_KEY no ambiente. Uso: python llm_prepass.py abstracts.csv
-Schema: Codebook DA-08 / pilot/config.py
+Schema: Codebook v4.0 DA-08/DA-09 / pilot/config.py
 """
 import sys, os, json, math, pandas as pd, urllib.request
+
+# Importação robusta de derive_orientacao: mesma pasta, ./utils ou ../utils.
+# Falha alto se o módulo não for encontrado em nenhum dos layouts.
+_AQUI = os.path.dirname(os.path.abspath(__file__))
+for _cand in (
+    _AQUI,
+    os.path.normpath(os.path.join(_AQUI, "utils")),
+    os.path.normpath(os.path.join(_AQUI, os.pardir, "utils")),
+):
+    if os.path.isfile(os.path.join(_cand, "derive_orientacao.py")) and _cand not in sys.path:
+        sys.path.insert(0, _cand)
+        break
+try:
+    from derive_orientacao import derive   # fonte única da derivação (DA-09)
+except ModuleNotFoundError:
+    sys.exit(
+        "derive_orientacao.py não encontrado. Coloque-o na mesma pasta deste script, "
+        "em utils/ ou em ../utils/."
+    )
 
 POSTURA_VALORES = ("positivista", "interpretativa", "doutrinario_normativa")
 
@@ -33,11 +55,10 @@ CRITERIO = (
     "Formato de saída:\n"
     "{\"score_positivista\":<float 0..1>,\"score_interpretativa\":<float 0..1>,"
     "\"score_doutrinario_normativa\":<float 0..1>,"
-    "\"postura_proeminente_llm\":\"positivista|interpretativa|doutrinario_normativa|mixed\","
     "\"nota_epistemologica\":\"<1-2 frases>\"}\n\n"
-    "score_x = confiança de que a postura x está presente. "
-    "postura_proeminente_llm = maior score; 'mixed' se positivista >= 0.5 E interpretativa >= 0.5; "
-    "empate exato resolve a favor de positivista."
+    "score_x = confiança de que a postura x está presente (limiar de decisão = 0,5). "
+    "Não derive nem retorne um rótulo de orientação proeminente: ele é computado localmente "
+    "a partir dos scores de EE e IC (DA-09)."
 )
 
 
@@ -52,19 +73,16 @@ def parse_response(raw):
     score_keys = ("score_positivista", "score_interpretativa", "score_doutrinario_normativa")
     scores = {k: float(obj.get(k, 0.0)) for k in score_keys}
     entropia = sum(_hbern(v) for v in scores.values()) / 3.0
-    dom = obj.get("postura_proeminente_llm", "")
-    if dom not in (*POSTURA_VALORES, "mixed"):
-        pos = [k for k, v in scores.items() if v >= 0.5]
-        emp = [k for k in pos if k in ("score_positivista","score_interpretativa")]
-        if len(emp) >= 2:
-            dom = "mixed"
-        elif pos:
-            dom = pos[0].replace("score_", "")
-        else:
-            dom = max(scores, key=scores.get).replace("score_", "")
+    # Derivação dois eixos via DA-09: orientacao_proeminente_llm só de EE+IC (Eixo 1).
+    # DN nunca entra no Eixo 1. inconclusiva = 1 sse os três flags são 0.
+    ee = int(scores["score_positivista"] >= 0.5)
+    ic = int(scores["score_interpretativa"] >= 0.5)
+    dn = int(scores["score_doutrinario_normativa"] >= 0.5)
+    deriv = derive(ee, ic, dn)
     return {
         **scores,
-        "postura_proeminente_llm": dom,
+        "orientacao_proeminente_llm": deriv["orientacao_proeminente"],
+        "inconclusiva": deriv["inconclusiva"],
         "nota_epistemologica": str(obj.get("nota_epistemologica", ""))[:500],
         "entropia_llm_epi": round(entropia, 4),
     }
@@ -102,7 +120,8 @@ def main(path):
             c = {
                 "score_positivista": None, "score_interpretativa": None,
                 "score_doutrinario_normativa": None,
-                "postura_proeminente_llm": None,
+                "orientacao_proeminente_llm": None,
+                "inconclusiva": None,
                 "nota_epistemologica": str(e),
                 "entropia_llm_epi": None,
             }
@@ -110,8 +129,9 @@ def main(path):
     out = pd.DataFrame(rows)
     out.to_csv("annotations_llm_prepass.csv", index=False)
     n = len(out)
-    dn  = (out.postura_proeminente_llm == "doutrinario_normativa").sum()
-    mix = (out.postura_proeminente_llm == "mixed").sum()
+    dn  = (out.score_doutrinario_normativa.fillna(0) >= 0.5).sum()
+    mix = (out.orientacao_proeminente_llm == "mixed").sum()
+    inc = out.inconclusiva.fillna(0).astype(int).sum()
     az  = (
         (out.score_positivista.fillna(0) < 0.5) &
         (out.score_interpretativa.fillna(0) < 0.5) &
@@ -119,8 +139,9 @@ def main(path):
     ).sum()
     print(
         f"[EXPLORATÓRIO — não é padrão-ouro] n={n} | "
-        f"doutrinario_normativa proeminente={dn} ({dn/n:.0%}) | "
-        f"mixed={mix} ({mix/n:.0%}) | all-zero={az} ({az/n:.0%})"
+        f"DN (Eixo 2, score>=0.5)={dn} ({dn/n:.0%}) | "
+        f"orientacao mixed (Eixo 1)={mix} ({mix/n:.0%}) | "
+        f"inconclusiva={inc} ({inc/n:.0%}) | all-zero={az} ({az/n:.0%})"
     )
     print("Use para triagem/escopo; alpha_DN humano (irrCAC/R) continua necessário.")
 
