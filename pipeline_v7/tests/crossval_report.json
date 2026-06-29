@@ -1,0 +1,21 @@
+{
+  "perfeita_alpha_irrcac": 1.0,
+  "perfeita_alpha_manual": 1.0,
+  "perfeita_kappa_irrcac": 1.0,
+  "perfeita_kappa_manual": 1.0,
+  "aleatoria_alpha_irrcac": -0.02597,
+  "aleatoria_alpha_manual": -0.025969,
+  "tipico_alpha_irrcac": 0.80074,
+  "tipico_alpha_manual": 0.800745,
+  "tipico_alpha_delta": 4.95e-06,
+  "tipico_kappa_irrcac": 0.80055,
+  "tipico_kappa_manual": 0.800545,
+  "tipico_kappa_delta": 4.5e-06,
+  "prevalencia_alta_kappa": 0.70135,
+  "prevalencia_alta_alpha": 0.70185,
+  "prevalencia_alta_ac1": 0.79963,
+  "missings_alpha_irrcac": 1.0,
+  "irrcac_version": "0.4.4",
+  "delta_threshold": 0.005,
+  "status": "PASSED"
+}

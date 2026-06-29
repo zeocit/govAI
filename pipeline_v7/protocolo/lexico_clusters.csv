@@ -1,0 +1,205 @@
+cluster,lemma
+si,interoperabilidade
+si,arquitetura
+si,enterprise architecture
+si,integração de sistemas
+si,padrões de dados
+si,master data management
+si,identity and access management
+si,single sign-on
+si,apis governamentais
+si,microsserviços
+si,govstack
+si,e-service delivery
+si,modelos de maturidade
+si,e-ping
+si,e-mag
+si,legacy systems
+si,back-office integration
+si,digital infrastructure
+si,togaf
+si,zachman
+si,delone-mclean
+si,layne lee
+si,andersen henriksen
+si,design science
+si,soa
+si,is success model
+si,is artifacts
+si,ontologias de governo
+si,bpmn
+si,enterprise content management
+ps,democracia digital
+ps,e-democracia
+ps,e-participação
+ps,deliberação digital
+ps,esfera pública digital
+ps,habermas
+ps,accountability
+ps,transparência ativa
+ps,governo aberto
+ps,monitorialidade cívica
+ps,capital social digital
+ps,civic tech
+ps,hacktivismo
+ps,voto eletrônico
+ps,autoritarismo digital
+ps,surveillance state
+ps,desinformação
+ps,fake news
+ps,polarização afetiva
+ps,câmaras de eco
+ps,filtros-bolha
+ps,filter bubbles
+ps,echo chambers
+ps,civic technology
+ps,open government partnership
+ps,sphere
+ps,deliberative democracy
+ps,political participation
+ps,disinformation
+ps,networked mobilization
+sts,sociotécnico
+sts,sociotechnical
+sts,coevolução
+sts,co-evolution
+sts,cidades inteligentes
+sts,smart cities
+sts,scot
+sts,actor-network theory
+sts,ant
+sts,sociomaterialidade
+sts,sociomateriality
+sts,technological frames
+sts,affordances
+sts,latour
+sts,callon
+sts,orlikowski
+sts,bijker
+sts,heeks
+sts,fountain
+sts,design-reality gap
+sts,technology enactment
+sts,design participativo
+sts,participatory design
+sts,multi-level perspective
+sts,large technical systems
+sts,iot urbano
+sts,urban informatics
+sts,living labs
+sts,makerspaces
+sts,sensoriamento cívico
+sts,civic sensing
+sts,inscription
+sts,translation
+sts,flexibilidade interpretativa
+sts,interpretive flexibility
+law,proteção de dados
+law,lgpd
+law,gdpr
+law,marco civil
+law,ai act
+law,digital services act
+law,digital markets act
+law,accountability algorítmica
+law,algorithmic accountability
+law,soberania digital
+law,constitucionalismo digital
+law,governança de plataformas
+law,direitos fundamentais
+law,autodeterminação informativa
+law,devido processo
+law,due process
+law,right to explanation
+law,direito à explicação
+law,anpd
+law,dpo
+law,dpia
+law,privacy by design
+law,floridi
+law,pasquale
+law,solove
+law,lex informatica
+law,fat in ml
+law,fairness accountability transparency
+law,proportionality principle
+law,constitutional law
+law,doutrina
+law,jurisprudência
+law,hermenêutica jurídica
+pa,nova gestão pública
+pa,new public management
+pa,npm
+pa,valor público
+pa,public value
+pa,digital era governance
+pa,deg
+pa,co-produção
+pa,co-production
+pa,cocriação
+pa,co-creation
+pa,governança em rede
+pa,networked governance
+pa,gestão por desempenho
+pa,performance management
+pa,accountability gerencial
+pa,capacidade estatal
+pa,state capacity
+pa,reforma administrativa
+pa,modernização da gestão
+pa,govtech
+pa,transformação digital
+pa,government as a platform
+pa,post-npm
+pa,whole-of-government
+pa,joined-up government
+pa,public service logic
+pa,public service design
+pa,hood
+pa,moore
+pa,dunleavy
+pa,bryson
+pa,contratos de gestão
+pa,gestão por resultados
+bcs,aceitação de tecnologia
+bcs,technology acceptance
+bcs,tam
+bcs,utaut
+bcs,utaut2
+bcs,tpb
+bcs,theory of planned behavior
+bcs,tra
+bcs,intenção de uso
+bcs,intention to use
+bcs,utilidade percebida
+bcs,perceived usefulness
+bcs,facilidade percebida
+bcs,perceived ease of use
+bcs,expectativa de desempenho
+bcs,performance expectancy
+bcs,effort expectancy
+bcs,social influence
+bcs,facilitating conditions
+bcs,hedonic motivation
+bcs,confiança digital
+bcs,digital trust
+bcs,exclusão digital
+bcs,digital divide
+bcs,alfabetização digital
+bcs,digital literacy
+bcs,self-efficacy
+bcs,autoeficácia
+bcs,computer anxiety
+bcs,perceived risk
+bcs,risco percebido
+bcs,sem
+bcs,structural equation modeling
+bcs,pls-sem
+bcs,davis
+bcs,venkatesh
+bcs,rogers
+bcs,diffusion of innovations
+bcs,nudge
+bcs,choice architecture
+bcs,citizen-centric design
+bcs,trust in e-government

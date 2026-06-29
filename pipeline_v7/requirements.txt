@@ -1,0 +1,28 @@
+# pipeline_v5 — dependências Python fixadas
+# Gerado em: 2026-05-31 (Round 4 de auditoria de código)
+# Ambiente de produção: macOS Apple Silicon (M5 Max), Python 3.10+
+# Para instalar: pip install -r requirements.txt
+#
+# NOTA: torch, transformers e pyalex NÃO estão nesta lista porque
+# dependem da plataforma (MPS/CUDA) e do hardware disponível.
+# Consulte INSTALL.md para instrções específicas de instalação.
+#
+# Pacotes testados e fixados:
+irrCAC==0.4.4
+openai==2.38.0
+pandas==2.3.3
+numpy==1.26.4
+pyarrow==24.0.0
+scikit-learn==1.8.0
+scipy==1.12.0
+rapidfuzz==3.14.5
+tqdm==4.67.3
+orjson==3.11.9
+
+# Instalação específica de plataforma — ver INSTALL.md:
+# torch             (MPS: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu)
+# transformers      (pip install transformers>=4.35)
+# pyalex            (pip install pyalex)
+#
+# Para desenvolvimento/QA:
+# ruff==0.15.15
