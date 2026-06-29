@@ -77,3 +77,6 @@ outputs/reports/
 .DS_Store
 Thumbs.db
 desktop.ini
+govai_push_package/
+govai_push_package.tar.gz
+~$*
